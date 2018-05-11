@@ -1,5 +1,7 @@
 package seu.vczz.seckill.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * CREATE by vczz on 2018/5/10
  * 服务端响应,自己写的,貌似很难受
@@ -50,6 +52,7 @@ public class ServerResponse <T> {
     /**
      * 判断是否是成功响应
      */
+    @JsonIgnore
     public boolean isSuccess(){
         return this.getCode() == 0;
     }
