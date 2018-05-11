@@ -8,7 +8,7 @@ import seu.vczz.seckill.domain.Test;
 /**
  * CREATE by vczz on 2018/5/11
  */
-@Mapper
+@Mapper()
 public interface TestDao {
 
     @Select("select * from seckill_test where id = #{id}")
