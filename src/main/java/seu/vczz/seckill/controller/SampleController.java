@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.Test;
 import seu.vczz.seckill.redis.RedisService;
-import seu.vczz.seckill.redis.keyprefix.UserKeyPrefix;
+import seu.vczz.seckill.redis.keyprefix.UserKey;
 import seu.vczz.seckill.service.ITestService;
 
 /**
@@ -44,14 +44,14 @@ public class SampleController {
         Test test = new Test();
         test.setId(1);
         test.setName("vczz");
-        boolean result = redisService.set(UserKeyPrefix.getById, ""+1, test);
+        boolean result = redisService.set(UserKey.getById, ""+1, test);
         return ServerResponse.success(result);
     }
 
     @RequestMapping("/redisGet")
     @ResponseBody
     public ServerResponse<Test> testRedisGet(){
-        Test test = redisService.get(UserKeyPrefix.getById, ""+1, Test.class);
+        Test test = redisService.get(UserKey.getById, ""+1, Test.class);
         return ServerResponse.success(test);
     }
 
