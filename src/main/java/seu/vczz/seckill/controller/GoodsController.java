@@ -18,8 +18,7 @@ import seu.vczz.seckill.service.IUserService;
 @RequestMapping("/goods")
 public class GoodsController {
 
-    @Autowired
-    private IUserService iUserService;
+
 
     /**
      * 商品列表，登录过后，命名没有传递user，怎么拿到user的呢，看UserArgumentResolver
