@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.redis.keyprefix.IKeyPrefix;
+import seu.vczz.seckill.redis.keyprefix.UserKey;
 import seu.vczz.seckill.util.JsonUtil;
 
 /**
@@ -40,7 +42,6 @@ public class RedisService {
         }finally {
             returnToPool(jedis);
         }
-
     }
 
     /**
@@ -125,13 +126,4 @@ public class RedisService {
         }
 
     }
-
-
-
-
-
-
-
-
-
 }

@@ -1,16 +1,21 @@
 package seu.vczz.seckill.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seu.vczz.seckill.common.CodeMsg;
 import seu.vczz.seckill.dao.UserDao;
 import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.exception.GlobalException;
+import seu.vczz.seckill.redis.RedisService;
+import seu.vczz.seckill.redis.keyprefix.UserKey;
 import seu.vczz.seckill.service.IUserService;
+import seu.vczz.seckill.util.CookieUtil;
 import seu.vczz.seckill.util.MD5Util;
+import seu.vczz.seckill.util.UUIDUtil;
 import seu.vczz.seckill.vo.LoginVo;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * CREATE by vczz on 2018/5/12
@@ -21,6 +26,8 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 通过id获取User
@@ -36,7 +43,7 @@ public class UserServiceImpl implements IUserService {
      * @param loginVo
      * @return
      */
-    public boolean login(LoginVo loginVo){
+    public boolean login(HttpServletResponse response, LoginVo loginVo){
         //不需要判断loginVo是否为空，因为前面controller已经判断了密码和手机号
         String mobile = loginVo.getMobile();
         String inputPass = loginVo.getPassword();
@@ -56,7 +63,28 @@ public class UserServiceImpl implements IUserService {
             throw new GlobalException(CodeMsg.PASSWORD_WRONG);
         }
         //否则登录成功
+        //做分布式session处理
+        String token = UUIDUtil.uuid();
+        //写进redis,key为前缀+uuid，value为user
+        if (!redisService.set(UserKey.token, token, user)){
+            //如果设置失败
+            throw new GlobalException(CodeMsg.SESSION_ERROR);
+        }
+        //写cookie
+        CookieUtil.writeLoginCookie(response, UserKey.token.expireSeconds(), token);
         return true;
+    }
+
+    /**
+     * 通过token获取user
+     * @param token
+     * @return
+     */
+    public User getByToken(String token){
+        if (StringUtils.isEmpty(token)){
+            return null;
+        }
+        return redisService.get(UserKey.token, token, User.class);
     }
 
 }

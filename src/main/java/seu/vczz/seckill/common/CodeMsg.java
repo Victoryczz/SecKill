@@ -22,6 +22,7 @@ public class CodeMsg {
     public static CodeMsg PASSWORD_WRONG = new CodeMsg(500215, "密码错误");
 
 
+
     /**
      * 构造函数
      * @param code 代码
