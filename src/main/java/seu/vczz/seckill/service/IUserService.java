@@ -21,6 +21,6 @@ public interface IUserService {
      * @param loginVo
      * @return
      */
-    CodeMsg login(LoginVo loginVo);
+    boolean login(LoginVo loginVo);
 
 }

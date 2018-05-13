@@ -41,7 +41,9 @@ public class LoginController {
     public ServerResponse<String> doLogin(@Valid LoginVo loginVo){
         log.info(loginVo.toString());
         //进行参数校验，其实可以前端来做，只判断是否为空，反正也没有实时校验的功能
-        String inputPass = loginVo.getPassword();
+        //使用了validator
+
+        /*String inputPass = loginVo.getPassword();
         //密码为空
         if (StringUtils.isEmpty(inputPass)){
             return ServerResponse.error(CodeMsg.PASSWORD_EMPTY);
@@ -54,15 +56,12 @@ public class LoginController {
         //判断手机号格式，如是否11位
         if (!ValidatorUtil.isMobile(mobile)){
             return ServerResponse.error(CodeMsg.MOBILE_PARAM_ERROR);
-        }
+        }*/
+
         //进行业务，登录
-        CodeMsg codeMsg = iUserService.login(loginVo);
-        if (codeMsg.getCode() == 0){
-            log.info(codeMsg.getCode()+":"+codeMsg.getMsg());
-            return ServerResponse.successMsg(codeMsg);
-        }
-        log.info(codeMsg.getCode()+":"+codeMsg.getMsg());
-        return ServerResponse.error(codeMsg);
+        iUserService.login(loginVo);
+        //由于其他的方法都是抛出异常，所以这里可以直接返回成功
+        return ServerResponse.successMsg(CodeMsg.SUCCESS);
     }
 
 
