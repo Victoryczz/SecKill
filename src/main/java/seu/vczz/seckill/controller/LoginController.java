@@ -13,6 +13,8 @@ import seu.vczz.seckill.service.IUserService;
 import seu.vczz.seckill.util.ValidatorUtil;
 import seu.vczz.seckill.vo.LoginVo;
 
+import javax.validation.Valid;
+
 /**
  * CREATE by vczz on 2018/5/12
  * 登录控制
@@ -36,7 +38,7 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public ServerResponse<String> doLogin(LoginVo loginVo){
+    public ServerResponse<String> doLogin(@Valid LoginVo loginVo){
         log.info(loginVo.toString());
         //进行参数校验，其实可以前端来做，只判断是否为空，反正也没有实时校验的功能
         String inputPass = loginVo.getPassword();

@@ -14,7 +14,6 @@ public class ValidatorUtil {
     //使用正则表达式简单实现
     //如果是1开头，而且一共11位就代表是手机号
     public static final Pattern mobilePattern = Pattern.compile("1\\d{10}");
-
     /**
      * 判断是否是手机号
      * @param src
@@ -27,10 +26,4 @@ public class ValidatorUtil {
         Matcher mobileMatcher = mobilePattern.matcher(src);
         return mobileMatcher.matches();
     }
-
-    public static void main(String[] args) {
-        String src = "11112222333";
-        System.out.println(isMobile(src));
-    }
-
 }
