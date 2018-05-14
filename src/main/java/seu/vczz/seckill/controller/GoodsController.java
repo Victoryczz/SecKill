@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import seu.vczz.seckill.domain.User;
-import seu.vczz.seckill.service.IUserService;
+import seu.vczz.seckill.service.IGoodsService;
+import seu.vczz.seckill.vo.SKGoodsVo;
 
+import java.util.List;
 
 
 /**
@@ -18,7 +20,8 @@ import seu.vczz.seckill.service.IUserService;
 @RequestMapping("/goods")
 public class GoodsController {
 
-
+    @Autowired
+    private IGoodsService iGoodsService;
 
     /**
      * 商品列表，登录过后，命名没有传递user，怎么拿到user的呢，看UserArgumentResolver
@@ -30,6 +33,9 @@ public class GoodsController {
     @RequestMapping("/to_list")
     public String goodsList(Model model, User user){
         model.addAttribute("user", user);
+        //查询秒杀商品列表
+        List<SKGoodsVo> skGoodsList = iGoodsService.listSKGoodsVo();
+        model.addAttribute("skGoodsList", skGoodsList);
         return "goods_list";
     }
 

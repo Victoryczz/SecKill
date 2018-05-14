@@ -35,6 +35,7 @@ public class GlobalExceptionHandler {
             //niubility
             return ServerResponse.error(globalException.getCodeMsg());
         } else {
+            e.printStackTrace();
             //如果不是绑定异常，就返回通用的错误
             return ServerResponse.error(CodeMsg.SERVER_ERROR);
         }

@@ -12,7 +12,9 @@ import java.util.Date;
  */
 @Setter
 @Getter
-public class GoodsVo extends Goods{
+public class SKGoodsVo extends Goods{
+    //秒杀价格
+    private Double miaoshaPrice;
     //数量
     private Integer stockCount;
     //秒杀开始时间

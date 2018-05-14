@@ -20,6 +20,8 @@ public class SKGoods {
     private Long id;
     //秒杀商品ID
     private Long goodsId;
+    //秒杀价格
+    private Double miaoshaPrice;
     //数量
     private Integer stockCount;
     //秒杀开始时间
