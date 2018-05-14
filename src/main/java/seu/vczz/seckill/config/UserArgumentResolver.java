@@ -43,7 +43,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         String cookieToken = null;
         //拿到cookieToken
         Cookie[] cookies = request.getCookies();
-        //cookie可能为空
+        //cookie可能为空，当然在项目中是这样的，如果cookie为空，就是没有登录
         if (cookies == null || cookies.length == 0){
             return null;
         }
