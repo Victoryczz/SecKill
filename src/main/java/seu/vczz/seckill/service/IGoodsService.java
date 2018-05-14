@@ -21,5 +21,11 @@ public interface IGoodsService {
      */
     SKGoodsVo getSKGoodsByGoodsId(Long goodsId);
 
+    /**
+     * 减少商品库存
+     * @param skGoodsVo
+     */
+    void reduceStock(SKGoodsVo skGoodsVo);
+
 
 }

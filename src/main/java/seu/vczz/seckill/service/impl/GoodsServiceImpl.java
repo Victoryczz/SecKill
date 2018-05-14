@@ -26,7 +26,6 @@ public class GoodsServiceImpl implements IGoodsService {
     public List<SKGoodsVo> listSKGoodsVo(){
         return goodsDao.listSKGoodsVo();
     }
-
     /**
      * 查询商品详情
      * @param goodsId
@@ -34,6 +33,15 @@ public class GoodsServiceImpl implements IGoodsService {
      */
     public SKGoodsVo getSKGoodsByGoodsId(Long goodsId){
         return goodsDao.getSKGoodsByGoodsId(goodsId);
+    }
+    /**
+     * 减少商品库存
+     * @param skGoodsVo
+     */
+    public void reduceStock(SKGoodsVo skGoodsVo){
+        SKGoods skGoods = new SKGoods();
+        skGoods.setGoodsId(skGoodsVo.getId());
+        goodsDao.reduceStock(skGoods);
     }
 
 }
