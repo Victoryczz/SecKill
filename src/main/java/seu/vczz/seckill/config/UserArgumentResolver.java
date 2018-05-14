@@ -40,6 +40,12 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         //之前的操作了
         String paramToken = request.getParameter(CookieUtil.COOKIE_NAME_TOKEN);
+        //为了压测
+        if (StringUtils.isNotEmpty(paramToken)){
+            User user = iUserService.getByToken(paramToken);
+            return user;
+        }
+        //end
         String cookieToken = null;
         //拿到cookieToken
         Cookie[] cookies = request.getCookies();

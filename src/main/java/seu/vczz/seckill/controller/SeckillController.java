@@ -38,6 +38,7 @@ public class SeckillController {
             return "login";
         }
         //判断库存
+        //注意：这一步可能就买超了
         SKGoodsVo skGoodsVo = iGoodsService.getSKGoodsByGoodsId(goodsId);
         int stock = skGoodsVo.getStockCount();
         if (stock <= 0){
