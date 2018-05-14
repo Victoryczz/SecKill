@@ -50,7 +50,7 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/to_detail/{goodsId}")
-    public String detail(@PathVariable("goodsId")Integer goodsId, Model model, User user){
+    public String detail(@PathVariable("goodsId")Long goodsId, Model model, User user){
         model.addAttribute("user", user);
         //查询goods
         SKGoodsVo skGoodsVo = iGoodsService.getSKGoodsByGoodsId(goodsId);

@@ -26,6 +26,6 @@ public interface GoodsDao {
      * @return
      */
     @Select("select g.*, skg.stock_count, skg.miaosha_price, skg.start_date, skg.end_date from seckill_sk_goods skg left join seckill_goods g on skg.goods_id = g.id where g.id = #{goodsId}")
-    SKGoodsVo getSKGoodsByGoodsId(@Param("goodsId") Integer goodsId);
+    SKGoodsVo getSKGoodsByGoodsId(@Param("goodsId") Long goodsId);
 
 }

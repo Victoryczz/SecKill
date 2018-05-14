@@ -32,7 +32,7 @@ public class GoodsServiceImpl implements IGoodsService {
      * @param goodsId
      * @return
      */
-    public SKGoodsVo getSKGoodsByGoodsId(Integer goodsId){
+    public SKGoodsVo getSKGoodsByGoodsId(Long goodsId){
         return goodsDao.getSKGoodsByGoodsId(goodsId);
     }
 

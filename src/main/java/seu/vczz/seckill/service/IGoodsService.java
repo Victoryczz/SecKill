@@ -19,7 +19,7 @@ public interface IGoodsService {
      * @param goodsId
      * @return
      */
-    SKGoodsVo getSKGoodsByGoodsId(Integer goodsId);
+    SKGoodsVo getSKGoodsByGoodsId(Long goodsId);
 
 
 }
