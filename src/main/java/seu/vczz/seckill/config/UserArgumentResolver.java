@@ -11,10 +11,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.service.IUserService;
 import seu.vczz.seckill.util.CookieUtil;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * CREATE by vczz on 2018/5/13
@@ -44,6 +43,10 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         String cookieToken = null;
         //拿到cookieToken
         Cookie[] cookies = request.getCookies();
+        //cookie可能为空
+        if (cookies == null || cookies.length == 0){
+            return null;
+        }
         for (Cookie cookie : cookies){
             if (cookie.getName().equals(CookieUtil.COOKIE_NAME_TOKEN)){
                 cookieToken = cookie.getValue();
