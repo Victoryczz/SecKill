@@ -14,6 +14,12 @@ public interface IGoodsService {
      * @return
      */
     List<SKGoodsVo> listSKGoodsVo();
+    /**
+     * 查询商品详情
+     * @param goodsId
+     * @return
+     */
+    SKGoodsVo getSKGoodsByGoodsId(Integer goodsId);
 
 
 }

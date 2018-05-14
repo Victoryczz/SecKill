@@ -1,6 +1,7 @@
 package seu.vczz.seckill.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import seu.vczz.seckill.vo.SKGoodsVo;
 
@@ -17,6 +18,14 @@ public interface GoodsDao {
      * @return
      */
     @Select("select g.*, skg.stock_count, skg.miaosha_price, skg.start_date, skg.end_date from seckill_sk_goods skg left join seckill_goods g on skg.goods_id = g.id")
-    List<SKGoodsVo> listGoodsVo();
+    List<SKGoodsVo> listSKGoodsVo();
+
+    /**
+     * 根据goodsId查询商品
+     * @param goodsId
+     * @return
+     */
+    @Select("select g.*, skg.stock_count, skg.miaosha_price, skg.start_date, skg.end_date from seckill_sk_goods skg left join seckill_goods g on skg.goods_id = g.id where g.id = #{goodsId}")
+    SKGoodsVo getSKGoodsByGoodsId(@Param("goodsId") Integer goodsId);
 
 }

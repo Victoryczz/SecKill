@@ -3,6 +3,7 @@ package seu.vczz.seckill.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seu.vczz.seckill.dao.GoodsDao;
+import seu.vczz.seckill.domain.SKGoods;
 import seu.vczz.seckill.service.IGoodsService;
 import seu.vczz.seckill.vo.SKGoodsVo;
 
@@ -23,7 +24,16 @@ public class GoodsServiceImpl implements IGoodsService {
      * @return
      */
     public List<SKGoodsVo> listSKGoodsVo(){
-        return goodsDao.listGoodsVo();
+        return goodsDao.listSKGoodsVo();
+    }
+
+    /**
+     * 查询商品详情
+     * @param goodsId
+     * @return
+     */
+    public SKGoodsVo getSKGoodsByGoodsId(Integer goodsId){
+        return goodsDao.getSKGoodsByGoodsId(goodsId);
     }
 
 }
