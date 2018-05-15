@@ -9,7 +9,7 @@ public class UserKey extends AbstractKeyPrefix{
     //token有效期
     private static final int EXPIRE_TIME = 60*30;
 
-    public UserKey(int expireSeconds, String prefix){
+    private UserKey(int expireSeconds, String prefix){
         super(expireSeconds, prefix);
     }
 
@@ -18,10 +18,10 @@ public class UserKey extends AbstractKeyPrefix{
         super(prefix);
     }
     //通过id获得user
-    public static UserKey getById = new UserKey("id");
+    public static UserKey ID = new UserKey("id:");
     //通过name获得user
-    public static UserKey getByName = new UserKey("name");
+    public static UserKey NAME = new UserKey("name:");
     //token
-    public static UserKey token = new UserKey(EXPIRE_TIME, "token");
+    public static UserKey TOKEN = new UserKey(EXPIRE_TIME, "token:");
 
 }

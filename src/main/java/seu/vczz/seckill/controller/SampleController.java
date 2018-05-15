@@ -44,14 +44,14 @@ public class SampleController {
         Test test = new Test();
         test.setId(1);
         test.setName("vczz");
-        boolean result = redisService.set(UserKey.getById, ""+1, test);
+        boolean result = redisService.set(UserKey.ID, ""+1, test);
         return ServerResponse.success(result);
     }
 
     @RequestMapping("/redisGet")
     @ResponseBody
     public ServerResponse<Test> testRedisGet(){
-        Test test = redisService.get(UserKey.getById, ""+1, Test.class);
+        Test test = redisService.get(UserKey.ID, ""+1, Test.class);
         return ServerResponse.success(test);
     }
 

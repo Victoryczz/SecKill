@@ -1,5 +1,6 @@
 package seu.vczz.seckill.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import seu.vczz.seckill.util.CookieUtil;
 import seu.vczz.seckill.util.MD5Util;
 import seu.vczz.seckill.util.UUIDUtil;
 import seu.vczz.seckill.vo.LoginVo;
-
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * 用户业务类
  */
 @Service("iUserService")
+@Slf4j
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -30,12 +31,24 @@ public class UserServiceImpl implements IUserService {
     private RedisService redisService;
 
     /**
-     * 通过id获取User
+     * 通过id获取User,对象存储的时候，放在redis中，永久有效
      * @param id
      * @return
      */
     public User getById(long id){
-        return userDao.getById(id);
+        //取缓存
+        User user = redisService.get(UserKey.ID, ""+id, User.class);
+        if (user != null){
+            return user;
+        }
+        //没有
+        user = userDao.getById(id);
+        if (user != null){
+            redisService.set(UserKey.ID, ""+id, user);
+            return user;
+        }
+        log.warn("-----------------no such user by id--------"+id);
+        return null;
     }
 
     /**
@@ -66,12 +79,12 @@ public class UserServiceImpl implements IUserService {
         //做分布式session处理
         String token = UUIDUtil.uuid();
         //写进redis,key为前缀+uuid，value为user
-        if (!redisService.set(UserKey.token, token, user)){
+        if (!redisService.set(UserKey.TOKEN, token, user)){
             //如果设置失败
             throw new GlobalException(CodeMsg.SESSION_ERROR);
         }
         //写cookie
-        CookieUtil.writeLoginCookie(response, UserKey.token.expireSeconds(), token);
+        CookieUtil.writeLoginCookie(response, UserKey.TOKEN.expireSeconds(), token);
         return true;
     }
 
@@ -84,7 +97,7 @@ public class UserServiceImpl implements IUserService {
         if (StringUtils.isEmpty(token)){
             return null;
         }
-        return redisService.get(UserKey.token, token, User.class);
+        return redisService.get(UserKey.TOKEN, token, User.class);
     }
 
 }
