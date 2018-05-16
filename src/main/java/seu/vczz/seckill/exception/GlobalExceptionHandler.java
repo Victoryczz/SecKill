@@ -1,5 +1,7 @@
 package seu.vczz.seckill.exception;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import seu.vczz.seckill.common.CodeMsg;
 import seu.vczz.seckill.common.ServerResponse;
-
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @ControllerAdvice
 @ResponseBody
+@Slf4j
 public class GlobalExceptionHandler {
     //代表拦截所有的异常,Exception.class
     @ExceptionHandler(value = Exception.class)
@@ -34,7 +36,14 @@ public class GlobalExceptionHandler {
             GlobalException globalException = (GlobalException) e;
             //niubility
             return ServerResponse.error(globalException.getCodeMsg());
-        } else {
+        }else if (e instanceof DuplicateKeyException){
+            //如果是重复的键，就是重复下单
+            DuplicateKeyException exception = (DuplicateKeyException) e;
+            String str = exception.getMessage();
+            log.error(str);
+            return ServerResponse.error(CodeMsg.REPEATE_MIAOSHA);
+        }
+        else {
             e.printStackTrace();
             //如果不是绑定异常，就返回通用的错误
             return ServerResponse.error(CodeMsg.SERVER_ERROR);
