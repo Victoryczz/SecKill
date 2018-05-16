@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.Test;
+import seu.vczz.seckill.rabbitmq.MQReceiver;
+import seu.vczz.seckill.rabbitmq.MQSender;
 import seu.vczz.seckill.redis.RedisService;
 import seu.vczz.seckill.redis.keyprefix.UserKey;
 import seu.vczz.seckill.service.ITestService;
@@ -24,6 +26,10 @@ public class SampleController {
     private ITestService iTestService;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private MQSender mqSender;
+    @Autowired
+    private MQReceiver mqReceiver;
 
     @RequestMapping("/thymeleaf")
     public String thymeleaf(Model model){
@@ -53,6 +59,13 @@ public class SampleController {
     public ServerResponse<Test> testRedisGet(){
         Test test = redisService.get(UserKey.ID, ""+1, Test.class);
         return ServerResponse.success(test);
+    }
+
+    @RequestMapping("/mq")
+    @ResponseBody
+    public ServerResponse<String> testMQ(){
+        mqSender.send("fuck you");
+        return ServerResponse.success("hello fuck you");
     }
 
 
