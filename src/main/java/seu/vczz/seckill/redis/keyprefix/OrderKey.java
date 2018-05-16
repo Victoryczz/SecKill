@@ -10,5 +10,5 @@ public class OrderKey extends AbstractKeyPrefix{
         super(prefix);
     }
 
-    public static OrderKey GET_ORDER_BY_USER_GOODS_ID = new OrderKey("ugid：");
+    public static OrderKey GET_ORDER_BY_USER_GOODS_ID = new OrderKey("ugid:");
 }
