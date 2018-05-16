@@ -27,4 +27,10 @@ public interface IOrderService {
      */
     Order createOrder(User user, SKGoodsVo skGoodsVo);
 
+    /**
+     * 根据订单号获得订单信息
+     * @param orderId
+     * @return
+     */
+    Order getOrderByOrderId(Long orderId);
 }

@@ -10,5 +10,5 @@ public class OrderKey extends AbstractKeyPrefix{
         super(prefix);
     }
 
-    public static OrderKey getSeckillOrderByUid = new OrderKey("uid");
+    public static OrderKey GET_ORDER_BY_USER_GOODS_ID = new OrderKey("ugid：");
 }

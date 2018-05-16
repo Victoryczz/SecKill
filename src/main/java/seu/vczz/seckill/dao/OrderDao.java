@@ -23,7 +23,6 @@ public interface OrderDao {
      * @param order
      * @return
      */
-
     @Insert("insert into seckill_order(user_id, goods_id, goods_name, goods_count, goods_price," +
             "order_channel, status, create_date) values(#{userId}, #{goodsId}, #{goodsName}, #{goodsCount}, " +
             "#{goodsPrice}, #{orderChannel},#{status},#{createDate})")
@@ -36,6 +35,14 @@ public interface OrderDao {
      */
     @Insert("insert into seckill_sk_order (user_id, goods_id, order_id) values (#{userId}, #{goodsId}, #{orderId})")
     int insertSKOrder(SKOrder skOrder);
+
+    /**
+     * 根据订单号获得订单信息
+     * @param orderId
+     * @return
+     */
+    @Select("select * from seckill_order where id = #{orderId}")
+    Order getOrderByOrderId(@Param("orderId") Long orderId);
 
 
 

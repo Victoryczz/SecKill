@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import seu.vczz.seckill.common.CodeMsg;
+import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.Order;
 import seu.vczz.seckill.domain.SKOrder;
 import seu.vczz.seckill.domain.User;
@@ -30,12 +33,18 @@ public class SeckillController {
     @Autowired
     private IMiaoShaService iMiaoShaService;
 
-    @RequestMapping("/do_miaosha")
-    public String miaosha(Model model, User user,@RequestParam("goodsId") Long goodsId){
-        model.addAttribute("user", user);
+    /**
+     * 秒杀
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    @RequestMapping(value = "/do_miaosha", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<Order> miaosha(User user, @RequestParam("goodsId") Long goodsId){
         //如果用户不存在，则跳转到登录页面
         if (user == null){
-            return "login";
+            return ServerResponse.error(CodeMsg.SESSION_ERROR);
         }
         //判断库存
         //注意：这一步可能就买超了
@@ -43,20 +52,17 @@ public class SeckillController {
         int stock = skGoodsVo.getStockCount();
         if (stock <= 0){
             //如果没有库存了
-            model.addAttribute("errmsg", CodeMsg.MIAO_SHA_OVER.getMsg());
-            return "miaosha_fail";
+            return ServerResponse.error(CodeMsg.STOCK_NOT_ENOUGH);
         }
+        //有库存
         //判断有没有秒杀成功，一个用户只能购买一件
         SKOrder skOrder = iOrderService.getSKOrderByUIdAndGoodsId(user.getId(), goodsId);
         if (skOrder != null){
-            model.addAttribute("errmsg", CodeMsg.REPEATE_MIAOSHA.getMsg());
-            return "miaosha_fail";
+            return ServerResponse.error(CodeMsg.REPEATE_MIAOSHA);
         }
         //否则秒杀成功
         Order order = iMiaoShaService.miaosha(user, skGoodsVo);
-        model.addAttribute("orderInfo", order);
-        model.addAttribute("goods", skGoodsVo);
         //返回订单详情页
-        return "order_detail";
+        return ServerResponse.success(order);
     }
 }

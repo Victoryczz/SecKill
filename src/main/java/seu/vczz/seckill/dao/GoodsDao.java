@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import seu.vczz.seckill.domain.SKGoods;
 import seu.vczz.seckill.vo.SKGoodsVo;
-
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public interface GoodsDao {
      * @param goods
      * @return
      */
-    @Update("update seckill_sk_goods set stock_count = stock_count-1 where goods_id = #{goodsId}")
+    @Update("update seckill_sk_goods set stock_count = stock_count-1 where goods_id = #{goodsId} and stock_count > 0")
     int reduceStock(SKGoods goods);
 
 }

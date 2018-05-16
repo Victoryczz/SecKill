@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.redis.RedisService;
 import seu.vczz.seckill.redis.keyprefix.GoodsKey;
 import seu.vczz.seckill.service.IGoodsService;
+import seu.vczz.seckill.vo.GoodsDetailVo;
 import seu.vczz.seckill.vo.SKGoodsVo;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -37,11 +38,10 @@ public class GoodsController {
     private ThymeleafViewResolver thymeleafViewResolver;
     @Autowired
     private ApplicationContext applicationContext;
-
-
     /**
      * 商品列表，登录过后，命名没有传递user，怎么拿到user的呢，看UserArgumentResolver
      * token可能通过cookie传递，也可能通过get参数传递
+     * 页面缓存
      * @param model
      * @param user
      * @return
@@ -72,6 +72,7 @@ public class GoodsController {
     }
     /**
      * 秒杀商品详情
+     * 页面缓存
      * @param goodsId
      * @param model
      * @param user
@@ -122,5 +123,43 @@ public class GoodsController {
         }
         return html;
     }
-
+    /**
+     * 前后端分离的goodsDetail，也就是使用了页面静态化
+     * @param goodsId
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/detail/{goodsId}")
+    @ResponseBody
+    public ServerResponse<GoodsDetailVo> detailStatic(@PathVariable("goodsId")Long goodsId, User user){
+        //查询goods
+        SKGoodsVo skGoodsVo = iGoodsService.getSKGoodsByGoodsId(goodsId);
+        //判断秒杀时间
+        long startTime = skGoodsVo.getStartDate().getTime();
+        long endTime = skGoodsVo.getEndDate().getTime();
+        long now = System.currentTimeMillis();
+        //秒杀状态和剩余时间
+        int miaoshaStatus = 0;
+        int remainSeconds = 0;
+        if (now < startTime){
+            //还没开始
+            miaoshaStatus = 0;
+            remainSeconds = (int) ((startTime-now)/1000);
+        }else if (now > endTime){
+            //结束了
+            miaoshaStatus = 2;
+            remainSeconds = -1;
+        }else {
+            //进行中
+            miaoshaStatus = 1;
+            remainSeconds = 0;
+        }
+        //返回
+        GoodsDetailVo goods = new GoodsDetailVo();
+        goods.setGoods(skGoodsVo);
+        goods.setMiaoshaStatus(miaoshaStatus);
+        goods.setRemainSeconds(remainSeconds);
+        goods.setUser(user);
+        return ServerResponse.success(goods);
+    }
 }

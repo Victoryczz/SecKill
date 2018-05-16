@@ -23,9 +23,9 @@ public class CodeMsg {
     //秒杀模块5003XX
     public static CodeMsg MIAO_SHA_OVER = new CodeMsg(500300, "秒杀已结束");
     public static CodeMsg REPEATE_MIAOSHA = new CodeMsg(500301, "不能重复秒杀");
-
+    public static CodeMsg STOCK_NOT_ENOUGH = new CodeMsg(500302, "库存不足");
     //订单模块5004XX
-
+    public static CodeMsg ORDER_NOT_EXISTS = new CodeMsg(500400, "订单不存在");
     //商品模块5005XX
 
 
