@@ -28,5 +28,4 @@ public class SKGoods {
     private Date startDate;
     //结束时间
     private Date endDate;
-
 }

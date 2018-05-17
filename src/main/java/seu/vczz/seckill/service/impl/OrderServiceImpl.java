@@ -11,6 +11,7 @@ import seu.vczz.seckill.redis.RedisService;
 import seu.vczz.seckill.redis.keyprefix.OrderKey;
 import seu.vczz.seckill.service.IOrderService;
 import seu.vczz.seckill.vo.SKGoodsVo;
+
 import java.util.Date;
 
 /**
@@ -31,7 +32,6 @@ public class OrderServiceImpl implements IOrderService {
      * @return
      */
     public SKOrder getSKOrderByUIdAndGoodsId(Long userId, Long goodsId){
-
         return redisService.get(OrderKey.GET_ORDER_BY_USER_GOODS_ID, ""+userId+"_"+goodsId, SKOrder.class);
     }
     /**
@@ -61,9 +61,8 @@ public class OrderServiceImpl implements IOrderService {
         skOrder.setOrderId(order.getId());
         skOrder.setUserId(user.getId());
         orderDao.insertSKOrder(skOrder);
-
-        //再将订单写入redis缓存
-        redisService.set(OrderKey.GET_ORDER_BY_USER_GOODS_ID, ""+user.getId()+"_"+skGoodsVo.getId(), skOrder);
+        //再将秒杀订单写入redis缓存
+        redisService.set(OrderKey.GET_ORDER_BY_USER_GOODS_ID, ""+user.getId()+"_"+ skGoodsVo.getId(), skOrder);
         return order;
     }
 

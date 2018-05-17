@@ -11,7 +11,6 @@ import seu.vczz.seckill.domain.Order;
 import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.service.IGoodsService;
 import seu.vczz.seckill.service.IOrderService;
-import seu.vczz.seckill.vo.GoodsDetailVo;
 import seu.vczz.seckill.vo.OrderDetailVo;
 import seu.vczz.seckill.vo.SKGoodsVo;
 

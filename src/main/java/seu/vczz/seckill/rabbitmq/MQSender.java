@@ -20,6 +20,14 @@ public class MQSender {
     private AmqpTemplate amqpTemplate;
 
     /**
+     * 发送秒杀消息
+     * @param miaoShaMessage
+     */
+    public void sendSecKillMessage(MiaoShaMessage miaoShaMessage){
+        String msg = JsonUtil.objToString(miaoShaMessage);
+        amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
+    }
+    /**
      * 直连模式
      * @param object
      */

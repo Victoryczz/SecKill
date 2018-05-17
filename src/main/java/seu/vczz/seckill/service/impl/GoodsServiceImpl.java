@@ -36,12 +36,13 @@ public class GoodsServiceImpl implements IGoodsService {
     }
     /**
      * 减少商品库存
-     * @param skGoodsVo
+     * @param skGoodsVoVo
      */
-    public void reduceStock(SKGoodsVo skGoodsVo){
+    public boolean reduceStock(SKGoodsVo skGoodsVoVo){
         SKGoods skGoods = new SKGoods();
-        skGoods.setGoodsId(skGoodsVo.getId());
-        goodsDao.reduceStock(skGoods);
+        skGoods.setGoodsId(skGoodsVoVo.getId());
+        int result = goodsDao.reduceStock(skGoods);
+        return result > 0;
     }
 
 }

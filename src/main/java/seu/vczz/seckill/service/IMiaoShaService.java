@@ -19,5 +19,11 @@ public interface IMiaoShaService {
      */
     Order miaosha(User user, SKGoodsVo skGoodsVo);
 
-
+    /**
+     * 获取秒杀结果
+     * @param userId
+     * @param goodsId
+     * @return
+     */
+    long getMiaoShaResult(Long userId, long goodsId);
 }

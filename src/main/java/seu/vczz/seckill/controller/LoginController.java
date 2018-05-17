@@ -33,7 +33,6 @@ public class LoginController {
     public String toLogin(){
         return "login";
     }
-
     /**
      * 登录
      * @param response

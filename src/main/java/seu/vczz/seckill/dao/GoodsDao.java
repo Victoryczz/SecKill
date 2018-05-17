@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import seu.vczz.seckill.domain.SKGoods;
 import seu.vczz.seckill.vo.SKGoodsVo;
+
 import java.util.List;
 
 /**

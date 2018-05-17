@@ -16,6 +16,8 @@ public class GoodsKey extends AbstractKeyPrefix {
     public static GoodsKey GOODS_LIST = new GoodsKey(EXPIRE_TIME, "goodsList");
     //商品详情
     public static GoodsKey GOODS_DETAIL = new GoodsKey(EXPIRE_TIME, "goodsDetail:");
+    //商品库存
+    public static GoodsKey GOODS_STOCK = new GoodsKey(EXPIRE_TIME, "goodsStock:");
 
 
 }

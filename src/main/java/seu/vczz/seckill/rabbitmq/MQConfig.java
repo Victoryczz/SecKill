@@ -2,10 +2,8 @@ package seu.vczz.seckill.rabbitmq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +27,17 @@ public class MQConfig {
     //headers模式
     public static final String HEADERS_EXCHANGE = "headersExchange";
     public static final String HEADERS_QUEUE = "headersQueue";
+    //秒杀
+    public static final String MIAOSHA_QUEUE = "miaoShaQueue";
 
+    /**
+     * 秒杀消息队列
+     * @return
+     */
+    @Bean
+    public Queue miaoShaQueue(){
+        return new Queue(MIAOSHA_QUEUE, true);
+    }
     /**
      * 直连模式
      * @return
@@ -39,7 +47,6 @@ public class MQConfig {
         //是否持久化
         return new Queue(QUEUE, true);
     }
-
     /**
      * exchange模式
      * @return

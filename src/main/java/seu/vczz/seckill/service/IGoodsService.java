@@ -1,7 +1,6 @@
 package seu.vczz.seckill.service;
 
 import seu.vczz.seckill.vo.SKGoodsVo;
-
 import java.util.List;
 
 /**
@@ -20,12 +19,11 @@ public interface IGoodsService {
      * @return
      */
     SKGoodsVo getSKGoodsByGoodsId(Long goodsId);
-
     /**
      * 减少商品库存
      * @param skGoodsVo
      */
-    void reduceStock(SKGoodsVo skGoodsVo);
+    boolean reduceStock(SKGoodsVo skGoodsVo);
 
 
 }

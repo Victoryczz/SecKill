@@ -114,6 +114,41 @@ public class RedisService {
         }
     }
 
+    /**
+     * 增加
+     * @param prefix
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> Long incr(IKeyPrefix prefix, String key){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix()+key;
+            return jedis.incr(realKey);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 减少
+     * @param keyPrefix
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> Long decr(IKeyPrefix keyPrefix, String key){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = keyPrefix.getPrefix()+key;
+            return jedis.decr(realKey);
+        }finally {
+            returnToPool(jedis);
+        }
+    }
 
     /**
      * redis连接归还给连接池

@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService {
         //不需要判断loginVo是否为空，因为前面controller已经判断了密码和手机号
         String mobile = loginVo.getMobile();
         String inputPass = loginVo.getPassword();
-        //判断手机号是否存在
+        //判断手机号是否存在，这一步也是优化，没有从数据库中取，而是先从redis中取，没有则去访问数据库
         User user = getById(Long.parseLong(mobile));
         if (user == null){
             throw new GlobalException(CodeMsg.USER_NOT_EXISTS);

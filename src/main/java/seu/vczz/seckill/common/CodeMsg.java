@@ -24,11 +24,10 @@ public class CodeMsg {
     public static CodeMsg MIAO_SHA_OVER = new CodeMsg(500300, "秒杀已结束");
     public static CodeMsg REPEATE_MIAOSHA = new CodeMsg(500301, "不能重复秒杀");
     public static CodeMsg STOCK_NOT_ENOUGH = new CodeMsg(500302, "库存不足");
+    public static CodeMsg ON_LINE = new CodeMsg(500303, "排队中");
     //订单模块5004XX
     public static CodeMsg ORDER_NOT_EXISTS = new CodeMsg(500400, "订单不存在");
     //商品模块5005XX
-
-
     /**
      * 构造函数
      * @param code 代码
@@ -38,7 +37,6 @@ public class CodeMsg {
         this.code = code;
         this.msg = msg;
     }
-
     /**
      * 填充参数的codeMsg,这方法很奇妙
      * @param args 异常参数
@@ -49,8 +47,6 @@ public class CodeMsg {
         String msg = String.format(this.msg, args);
         return new CodeMsg(code, msg);
     }
-
-
 
     public int getCode() {
         return code;

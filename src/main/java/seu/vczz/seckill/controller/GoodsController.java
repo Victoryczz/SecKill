@@ -57,9 +57,8 @@ public class GoodsController {
         }
         //没有就手动渲染模板，按照spring boot中thymeleaf的渲染方式手动渲染，放进缓存，然后返回
         //查询秒杀商品列表
-        List<SKGoodsVo> skGoodsList = iGoodsService.listSKGoodsVo();
-        model.addAttribute("skGoodsList", skGoodsList);
-
+        List<SKGoodsVo> skGoodsVoList = iGoodsService.listSKGoodsVo();
+        model.addAttribute("skGoodsVoList", skGoodsVoList);
         //手动处理
         SpringWebContext springWebContext = new SpringWebContext(request, response, request.getServletContext(),
                 request.getLocale(), model.asMap(), applicationContext);
@@ -72,7 +71,7 @@ public class GoodsController {
     }
     /**
      * 秒杀商品详情
-     * 页面缓存
+     * 页面缓存,使用了前后端分离之后，这个函数就没有访问过了
      * @param goodsId
      * @param model
      * @param user

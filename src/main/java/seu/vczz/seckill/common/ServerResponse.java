@@ -15,7 +15,6 @@ public class ServerResponse <T> {
     //响应数据
     private T data;
 
-
     //带data的success响应
     public ServerResponse(T data) {
         this.code = 0;
