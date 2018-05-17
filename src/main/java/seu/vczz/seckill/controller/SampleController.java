@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.Test;
-import seu.vczz.seckill.rabbitmq.MQReceiver;
 import seu.vczz.seckill.rabbitmq.MQSender;
 import seu.vczz.seckill.redis.RedisService;
 import seu.vczz.seckill.redis.keyprefix.UserKey;
@@ -28,8 +27,6 @@ public class SampleController {
     private RedisService redisService;
     @Autowired
     private MQSender mqSender;
-    @Autowired
-    private MQReceiver mqReceiver;
 
     @RequestMapping("/thymeleaf")
     public String thymeleaf(Model model){
@@ -68,5 +65,24 @@ public class SampleController {
         return ServerResponse.success("hello fuck you");
     }
 
+    @RequestMapping("/mq/topic")
+    @ResponseBody
+    public ServerResponse<String> topic() {
+		mqSender.sendTopic("hello,11111111111111");
+        return ServerResponse.success("Hello，world");
+    }
 
+    @RequestMapping("/mq/fanout")
+    @ResponseBody
+    public ServerResponse<String> fanout(){
+        mqSender.sendFanout("wawawawaawwaaaaaaaaaaaaaa");
+        return ServerResponse.success("fuck");
+    }
+
+    @RequestMapping("/mq/headers")
+    @ResponseBody
+    public ServerResponse<String> header() {
+		mqSender.sendHeaders("你好");
+        return ServerResponse.success("Hello，world");
+    }
 }
