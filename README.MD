@@ -22,4 +22,4 @@
      * 异步消息处理(RabbitMQ)
      * 应用降级(关闭非必须功能)
      * 接口限流防刷(工程中使用自定义注解以及拦截器实现)
-
+![樱木](https://raw.githubusercontent.com/Victoryczz/SecKill/v2/src/main/resources/static/img/%E6%A8%B1%E6%9C%A8%E8%8A%B1%E9%81%93.jpg)
