@@ -1,11 +1,11 @@
 package seu.vczz.seckill.controller;
 
-import com.mysql.fabric.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import seu.vczz.seckill.access.AccessLimit;
 import seu.vczz.seckill.common.CodeMsg;
 import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.SKOrder;
@@ -21,15 +21,12 @@ import seu.vczz.seckill.service.IOrderService;
 import seu.vczz.seckill.util.MD5Util;
 import seu.vczz.seckill.util.UUIDUtil;
 import seu.vczz.seckill.vo.SKGoodsVo;
-
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
-
-
 /**
  * CREATE by vczz on 2018/5/14
  * 秒杀Controller
@@ -136,6 +133,8 @@ public class MiaoShaController implements InitializingBean{
      * @param verifyCode 验证码
      * @return
      */
+    //10s允许访问20次
+    @AccessLimit(seconds = 10, maxCount = 20)
     @RequestMapping("/path")
     @ResponseBody
     public ServerResponse<String> getMiaoShaPath(User user,@RequestParam("goodsId") Long goodsId,

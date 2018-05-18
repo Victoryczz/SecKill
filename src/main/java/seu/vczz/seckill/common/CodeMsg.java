@@ -21,6 +21,7 @@ public class CodeMsg {
     public static CodeMsg MOBILE_PARAM_ERROR = new CodeMsg(500213, "手机号码格式错误");
     public static CodeMsg USER_NOT_EXISTS = new CodeMsg(500214, "用户不存在");
     public static CodeMsg PASSWORD_WRONG = new CodeMsg(500215, "密码错误");
+    public static CodeMsg ACCESS_LIMIT_REACHED = new CodeMsg(500216, "访问次数已达到");
     //秒杀模块5003XX
     public static CodeMsg MIAO_SHA_OVER = new CodeMsg(500300, "秒杀已结束");
     public static CodeMsg REPEATE_MIAOSHA = new CodeMsg(500301, "不能重复秒杀");

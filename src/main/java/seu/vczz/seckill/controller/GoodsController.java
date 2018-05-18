@@ -20,8 +20,6 @@ import seu.vczz.seckill.vo.SKGoodsVo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
-
 /**
  * CREATE by vczz on 2018/5/13
  * 商品页
