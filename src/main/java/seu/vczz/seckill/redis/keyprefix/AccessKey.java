@@ -7,8 +7,6 @@ package seu.vczz.seckill.redis.keyprefix;
  */
 public class AccessKey extends AbstractKeyPrefix{
 
-
-
     public AccessKey(int expireSeconds, String prefix){
         super(expireSeconds, prefix);
     }

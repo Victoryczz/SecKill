@@ -6,7 +6,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import seu.vczz.seckill.access.AccessInterceptor;
-
 import java.util.List;
 
 /**

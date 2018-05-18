@@ -9,8 +9,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * CREATE by vczz on 2018/5/18
  * 接口访问限制注解
  */
-
-
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface AccessLimit {
