@@ -74,6 +74,8 @@ public class MiaoShaController implements InitializingBean{
         //再判断是否秒杀过
         SKOrder skOrder = iOrderService.getSKOrderByUIdAndGoodsId(user.getId(), goodsId);
         if (skOrder != null){
+            //已经秒杀过了，则吧增加的库存加回来
+            redisService.incr(GoodsKey.GOODS_STOCK, ""+goodsId);
             return ServerResponse.error(CodeMsg.REPEATE_MIAOSHA);
         }
         //3.既没有秒杀过，也有库存，就发消息,在收到消息之后进行下订单的处理
