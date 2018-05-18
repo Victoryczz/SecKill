@@ -4,6 +4,8 @@ import seu.vczz.seckill.domain.Order;
 import seu.vczz.seckill.domain.User;
 import seu.vczz.seckill.vo.SKGoodsVo;
 
+import java.awt.image.BufferedImage;
+
 /**
  * CREATE by vczz on 2018/5/14
  * 秒杀service
@@ -26,4 +28,19 @@ public interface IMiaoShaService {
      * @return
      */
     long getMiaoShaResult(Long userId, long goodsId);
+    /**
+     * 生成验证码图像
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    BufferedImage createVerifyCode(User user, long goodsId);
+    /**
+     * 验证验证码
+     * @param user
+     * @param goodsId
+     * @param verifyCode
+     * @return
+     */
+    boolean checkVerifyCode(User user, long goodsId, int verifyCode);
 }

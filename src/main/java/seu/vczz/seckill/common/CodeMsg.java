@@ -13,6 +13,7 @@ public class CodeMsg {
     public static CodeMsg SUCCESS = new CodeMsg(0, "success");
     public static CodeMsg SERVER_ERROR = new CodeMsg(500100, "服务端异常");
     public static CodeMsg BIND_EXCEPTION = new CodeMsg(500101, "参数校验异常: %s");
+    public static CodeMsg ILLEGAL_REQUEST = new CodeMsg(500102, "请求非法");
     //登录模块5002XX
     public static CodeMsg SESSION_ERROR = new CodeMsg(500210, "Session不存在或已经失效");
     public static CodeMsg PASSWORD_EMPTY = new CodeMsg(500211, "密码不能为空");
@@ -25,6 +26,9 @@ public class CodeMsg {
     public static CodeMsg REPEATE_MIAOSHA = new CodeMsg(500301, "不能重复秒杀");
     public static CodeMsg STOCK_NOT_ENOUGH = new CodeMsg(500302, "库存不足");
     public static CodeMsg ON_LINE = new CodeMsg(500303, "排队中");
+    public static CodeMsg PATH_NOT_EXISTS = new CodeMsg(500304, "接口地址不存在");
+    public static CodeMsg MIAOSHA_FAILED = new CodeMsg(500305, "秒杀失败");
+    public static CodeMsg VERIFY_CODE_WRONG = new CodeMsg(500306, "验证码错误");
     //订单模块5004XX
     public static CodeMsg ORDER_NOT_EXISTS = new CodeMsg(500400, "订单不存在");
     //商品模块5005XX

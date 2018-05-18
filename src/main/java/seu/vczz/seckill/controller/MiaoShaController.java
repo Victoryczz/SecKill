@@ -1,12 +1,11 @@
 package seu.vczz.seckill.controller;
 
+import com.mysql.fabric.Server;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import seu.vczz.seckill.common.CodeMsg;
 import seu.vczz.seckill.common.ServerResponse;
 import seu.vczz.seckill.domain.SKOrder;
@@ -15,11 +14,18 @@ import seu.vczz.seckill.rabbitmq.MQSender;
 import seu.vczz.seckill.rabbitmq.MiaoShaMessage;
 import seu.vczz.seckill.redis.RedisService;
 import seu.vczz.seckill.redis.keyprefix.GoodsKey;
+import seu.vczz.seckill.redis.keyprefix.MiaoShaKey;
 import seu.vczz.seckill.service.IGoodsService;
 import seu.vczz.seckill.service.IMiaoShaService;
 import seu.vczz.seckill.service.IOrderService;
+import seu.vczz.seckill.util.MD5Util;
+import seu.vczz.seckill.util.UUIDUtil;
 import seu.vczz.seckill.vo.SKGoodsVo;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,12 +56,17 @@ public class MiaoShaController implements InitializingBean{
      * @param goodsId
      * @return
      */
-    @RequestMapping(value = "/do_miaosha", method = RequestMethod.POST)
+    @RequestMapping(value = "/{path}/do_miaosha", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<CodeMsg> miaosha(User user, @RequestParam("goodsId") Long goodsId){
+    public ServerResponse<CodeMsg> miaosha(User user, @RequestParam("goodsId") Long goodsId,@PathVariable("path")String path){
         //////////////////////////////////////////////////////////开始进行优化
-        if (user == null){
-            return ServerResponse.error(CodeMsg.SESSION_ERROR);
+        if (user == null || path == null || goodsId == null){
+            return ServerResponse.error(CodeMsg.ILLEGAL_REQUEST);
+        }
+        //验证path
+        String redisPath = redisService.get(MiaoShaKey.MIAOSHA_PATH, ""+user.getId()+"_"+goodsId, String.class);
+        if (!StringUtils.equals(redisPath, path)){
+            return ServerResponse.error(CodeMsg.PATH_NOT_EXISTS);
         }
         //1.初始化时候加载库存到redis，使改类实现InitializingBean接口
         //2.预减库存。但是不能每次都从redis预减库存，因此先判断本地,如果没了，redis都不需要访问了
@@ -102,7 +113,6 @@ public class MiaoShaController implements InitializingBean{
             localOverMap.put(skGoodsVo.getId(), false);
         }
     }
-
     /**
      * 供前台轮询，获取秒杀结果
      * @param user
@@ -117,5 +127,58 @@ public class MiaoShaController implements InitializingBean{
         }
         long result = iMiaoShaService.getMiaoShaResult(user.getId(), goodsId);
         return ServerResponse.success(result);
+    }
+
+    /**
+     * 请求秒杀的地址，前端点击了秒杀，先去请求秒杀地址，然后转发到秒杀接口，而不能直接暴露秒杀接口
+     * @param user
+     * @param goodsId
+     * @param verifyCode 验证码
+     * @return
+     */
+    @RequestMapping("/path")
+    @ResponseBody
+    public ServerResponse<String> getMiaoShaPath(User user,@RequestParam("goodsId") Long goodsId,
+                                                 @RequestParam("verifyCode")Integer verifyCode){
+        if (user == null || goodsId == null || verifyCode == null){
+            return ServerResponse.error(CodeMsg.SESSION_ERROR);
+        }
+        //验证验证码
+        boolean check = iMiaoShaService.checkVerifyCode(user, goodsId, verifyCode);
+        if (!check){
+            return ServerResponse.error(CodeMsg.VERIFY_CODE_WRONG);
+        }
+        //随机数加密
+        String str = MD5Util.md5(UUIDUtil.uuid());
+        //放到redis,每个用户对每件商品都有自己的秒杀地址
+        redisService.set(MiaoShaKey.MIAOSHA_PATH, ""+user.getId()+"_"+goodsId, str);
+        return ServerResponse.success(str);
+    }
+
+    /**
+     * 请求验证码
+     * @param response
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    @RequestMapping(value="/verifyCode", method=RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> getMiaoshaVerifyCod(HttpServletResponse response, User user,
+                                              @RequestParam("goodsId")Long goodsId) {
+        if(user == null || goodsId == null) {
+            return ServerResponse.error(CodeMsg.ILLEGAL_REQUEST);
+        }
+        try {
+            BufferedImage image  = iMiaoShaService.createVerifyCode(user, goodsId);
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(image, "JPEG", out);
+            out.flush();
+            out.close();
+            return null;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return ServerResponse.error(CodeMsg.MIAOSHA_FAILED);
+        }
     }
 }
