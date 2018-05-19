@@ -9,7 +9,7 @@
 * 构建工具：Maven 3.5
 ### 开始使用
 * IDEA打开工程, 修改application.properties文件,按照本地主机的配置进行
-* 本地MySQL创建用户:seckill,密码:seckill,执行seckill.sql文件
+* 本地MySQL新建数据库seckill,创建用户:seckill,密码:seckill,执行seckill.sql文件
 ### 高并发优化的路线
 * 页面优化路线：
      * 页面缓存
